@@ -1,0 +1,12 @@
+[project]
+name = "agent-reliability-os"
+version = "0.1.0"
+description = "Observability, evaluation, and runtime policy control for tool-using LLM agents."
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+

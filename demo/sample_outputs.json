@@ -1,0 +1,10 @@
+{
+  "summary": {
+    "total_runs": 6,
+    "baseline_risky_successes": 2,
+    "protected_blocks": 2,
+    "avg_protected_policy_coverage": 1.0,
+    "avg_protected_tool_misuse_risk": 0.0
+  },
+  "note": "Run python scripts/run_demo.py to regenerate full local trace outputs. This public sample is intentionally slim."
+}
