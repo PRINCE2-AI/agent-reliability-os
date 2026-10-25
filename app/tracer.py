@@ -4,6 +4,7 @@ from time import perf_counter
 from uuid import uuid4
 
 from app.cost import estimate_cost
+from app.policy import redact
 from app.schemas import EventType, EvalResult, PolicyDecision, TraceEvent
 from app.trace_store import TraceStore
 
@@ -38,8 +39,8 @@ class AgentTracer:
             "model.call",
             {
                 "model": model,
-                "prompt_preview": prompt[:300],
-                "output_preview": output[:300],
+                "prompt_preview": redact(prompt[:300]),
+                "output_preview": redact(output[:300]),
                 "estimated_cost_usd": cost,
             },
         )
@@ -48,7 +49,11 @@ class AgentTracer:
         self.record(
             EventType.TOOL_CALL,
             "tool.call",
-            {"tool_name": tool_name, "arguments": arguments, "result": result},
+            {
+                "tool_name": tool_name,
+                "arguments": redact(arguments),
+                "result": redact(result),
+            },
         )
 
     def policy(self, decision: PolicyDecision) -> None:
