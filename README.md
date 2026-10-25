@@ -14,6 +14,8 @@ Agent Reliability OS traces every agent step, scores reliability, compares basel
 > [!NOTE]
 > This is a practical research-inspired engineering project, not a claim of state-of-the-art agent evaluation. The goal is to show production AI engineering judgment: observability, guardrails, evals, reproducibility, and honest limitations.
 
+**Write-up:** [Why your agent eval passes locally and fails in production](https://thereliableagent.substack.com/p/why-your-agent-eval-passes-locally) — a self-critique of this repository's scorer, including the metrics that were measuring the wrong thing.
+
 ## Live Demo
 
 - [Open the hosted GitHub Pages demo](https://prince2-ai.github.io/agent-reliability-os/)
