@@ -27,7 +27,7 @@ class Handler(BaseHTTPRequestHandler):
         elif self.path == "/llm/status":
             self._send(llm_status(settings))
         elif self.path == "/evaluate":
-            self._send(run_demo_suite(settings.trace_db_path))
+            self._send(run_demo_suite())
         else:
             self._send({"error": "not found"}, 404)
 

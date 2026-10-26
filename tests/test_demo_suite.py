@@ -11,7 +11,12 @@ class DemoSuiteTests(unittest.TestCase):
             result = run_demo_suite(str(Path(tmp) / "demo.sqlite3"))
         self.assertEqual(result["summary"]["total_runs"], 6)
         self.assertGreaterEqual(result["summary"]["protected_blocks"], 2)
+        self.assertEqual(result["summary"]["protected_prevented"], 2)
         self.assertEqual(result["summary"]["avg_protected_policy_coverage"], 1.0)
+        blocked = [
+            run for run in result["runs"] if run["status"] == "blocked"
+        ]
+        self.assertTrue(all(run["evaluation"]["task_success"] == 0.0 for run in blocked))
 
 
 if __name__ == "__main__":
