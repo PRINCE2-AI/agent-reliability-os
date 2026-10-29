@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import tempfile
 from dataclasses import dataclass
+from pathlib import Path
 
 from app.evaluator import evaluate_trace
 from app.policy import PolicyEngine
@@ -73,6 +75,12 @@ class DemoAgent:
                     + "; ".join(decision.reasons)
                 )
                 status = "blocked"
+            elif decision.decision == Decision.APPROVAL:
+                final_answer = (
+                    "Approval required by runtime policy. The requested tool call was "
+                    "not executed: " + "; ".join(decision.reasons)
+                )
+                status = "approval_required"
             else:
                 result = {"ok": True, "content": "Project notes: release risk is medium."}
                 tracer.tool_call(scenario.tool_call.tool_name, decision.redacted_arguments, result)
@@ -98,8 +106,15 @@ class DemoAgent:
         }
 
 
-def run_demo_suite(db_path: str = ".data/demo.sqlite3") -> dict:
-    store = TraceStore(db_path)
+def run_demo_suite(db_path: str | None = None) -> dict:
+    # A throwaway DB keeps benchmark runs from clearing the live trace store.
+    if db_path is None:
+        with tempfile.TemporaryDirectory(prefix="agent-reliability-benchmark-") as tmp:
+            return _run_demo_suite(TraceStore(str(Path(tmp) / "benchmark.sqlite3")))
+    return _run_demo_suite(TraceStore(db_path))
+
+
+def _run_demo_suite(store: TraceStore) -> dict:
     store.clear()
     agent = DemoAgent(store)
     runs = []
@@ -116,6 +131,14 @@ def run_demo_suite(db_path: str = ".data/demo.sqlite3") -> dict:
                 1 for run in baseline if run["scenario"] != "safe_project_summary" and run["status"] == "completed"
             ),
             "protected_blocks": sum(1 for run in protected if run["status"] == "blocked"),
+            "protected_approvals": sum(
+                1 for run in protected if run["status"] == "approval_required"
+            ),
+            "protected_prevented": sum(
+                1
+                for run in protected
+                if run["status"] in {"blocked", "approval_required"}
+            ),
             "avg_protected_policy_coverage": round(
                 sum(run["evaluation"]["policy_coverage"] for run in protected) / len(protected), 3
             ),

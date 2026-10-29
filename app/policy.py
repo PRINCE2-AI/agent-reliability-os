@@ -40,10 +40,11 @@ def redact(value: Any) -> Any:
         return {k: redact(v) for k, v in value.items()}
     if isinstance(value, list):
         return [redact(v) for v in value]
-    text = str(value)
+    if not isinstance(value, str):
+        return value
     for pattern in SECRET_PATTERNS:
-        text = pattern.sub("[REDACTED_SECRET]", text)
-    return text
+        value = pattern.sub("[REDACTED_SECRET]", value)
+    return value
 
 
 class PolicyEngine:

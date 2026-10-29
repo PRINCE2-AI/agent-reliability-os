@@ -25,7 +25,7 @@ if st.sidebar.button("Run Scenario"):
     st.session_state["latest"] = result
 
 if st.sidebar.button("Run Benchmark Suite"):
-    st.session_state["suite"] = run_demo_suite(settings.trace_db_path)
+    st.session_state["suite"] = run_demo_suite()
 
 latest = st.session_state.get("latest")
 if latest:

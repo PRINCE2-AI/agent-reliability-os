@@ -57,7 +57,7 @@ def demo_run(mode: str = "protected", scenario: str = "secret_exfiltration") -> 
 
 @app.get("/evaluate")
 def evaluate() -> dict:
-    return run_demo_suite(settings.trace_db_path)
+    return run_demo_suite()
 
 
 @app.get("/runs")
