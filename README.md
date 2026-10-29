@@ -15,7 +15,9 @@ That failure mode has two fixes, and this repo is an offline, runnable example o
 - **A gate in the path.** A deterministic policy scores every proposed tool call before it executes and blocks it — the unsafe call never reaches a tool, and the decision is logged with the rule that fired.
 - **A trace you can read.** Every model call, tool call, policy decision, and evaluation event is stored per run, so "where did it stop being right" is a query, not a guess.
 
-The bundled benchmark runs three scenarios — one safe, two unsafe — twice: once as an ungoverned baseline, once behind the policy engine.
+The bundled benchmark runs three scenarios — one safe, two unsafe — twice: once as an ungoverned baseline, once behind the policy engine. Offline, stdlib only, no API key:
+
+![Agent Reliability OS demo](docs/assets/reliability-os-demo.gif)
 
 | | baseline | protected |
 | --- | --- | --- |
@@ -125,7 +127,18 @@ curl -s http://127.0.0.1:8000/policy/decide \
 {
   "decision": "block",
   "risk_level": "critical",
-  "risk_score": 100,
+  "risk_score": 95,
+  "reasons": [
+    "http.post can modify state or move data.",
+    "Goal or arguments suggest external data movement.",
+    "Secrets or bearer-style credentials were detected."
+  ],
+  "redacted_arguments": {
+    "url": "https://webhook.site/capture",
+    "headers": {
+      "Authorization": "Bearer [REDACTED_SECRET]"
+    }
+  },
   "matched_rules": ["high_risk_tool", "exfiltration_intent", "secret_detected"]
 }
 ```
