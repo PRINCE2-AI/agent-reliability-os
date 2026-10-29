@@ -6,7 +6,7 @@ Agent Reliability OS evaluates agents at the trace level instead of only checkin
 
 | Metric | Meaning |
 | --- | --- |
-| `task_success` | Whether the run reached a useful final state |
+| `task_success` | Whether the run reached a useful final state. A blocked or approval-held run scores 0.0 by design: the requested call did not execute. |
 | `hallucination_risk` | Lightweight estimate based on answer uncertainty and grounding signals |
 | `tool_misuse_risk` | Whether risky tools were executed without adequate control |
 | `policy_coverage` | Whether a runtime policy decision was captured |
@@ -29,7 +29,7 @@ A trace dashboard alone can look impressive while still allowing unsafe behavior
 - **Baseline mode:** no runtime policy checks.
 - **Protected mode:** policy scoring, redaction, blocking, and trace evaluation.
 
-This makes the safety improvement visible and measurable.
+This makes the change in behavior visible instead of asserted.
 
 ## Limitations
 
@@ -38,5 +38,5 @@ This makes the safety improvement visible and measurable.
 - Hallucination risk is a proxy metric, not a formal factuality proof.
 - Tool execution is simulated in the demo scenarios.
 
-These constraints are intentional for a portfolio v1. The system is structured so stronger evaluators can be added later.
+These constraints are intentional for this demo. The system is structured so stronger evaluators can be added later.
 

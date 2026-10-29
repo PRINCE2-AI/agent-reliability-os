@@ -126,9 +126,10 @@
         </tr>
         </tbody>
       </table>
+      <p class="note">Task success reads 0.0 on a blocked run because the policy stopped the call before it executed — for the two unsafe scenarios that is the intended outcome. The safe scenario still completes at 1.0 with the policy on.</p>
     </section>
     <section>
-      <h2>What This Proves</h2>
+      <h2>What the Run Records</h2>
       <pre>{
   "total_runs": 6,
   "baseline_risky_successes": 2,

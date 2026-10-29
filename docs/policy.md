@@ -40,6 +40,15 @@ Expected result:
 {
   "decision": "block",
   "risk_level": "critical",
+  "risk_score": 95,
+  "reasons": [
+    "http.post can modify state or move data.",
+    "Goal or arguments suggest external data movement.",
+    "Secrets or bearer-style credentials were detected."
+  ],
+  "redacted_arguments": {
+    "Authorization": "Bearer [REDACTED_SECRET]"
+  },
   "matched_rules": ["high_risk_tool", "exfiltration_intent", "secret_detected"]
 }
 ```

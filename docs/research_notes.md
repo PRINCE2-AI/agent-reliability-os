@@ -1,6 +1,6 @@
 # Research Notes
 
-Agent Reliability OS is inspired by the shift from simple LLM apps to production agent systems. The implementation maps research and practitioner ideas into a small, runnable portfolio project.
+Agent Reliability OS is inspired by the shift from simple LLM apps to production agent systems. The implementation maps research and practitioner ideas into a small, runnable project.
 
 ## Research And Practitioner Threads
 

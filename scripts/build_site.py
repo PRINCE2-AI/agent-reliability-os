@@ -94,9 +94,10 @@ def main() -> None:
         <thead><tr><th>Mode</th><th>Scenario</th><th>Status</th><th>Task Success</th><th>Tool Misuse Risk</th><th>Policy Coverage</th></tr></thead>
         <tbody>{rows}</tbody>
       </table>
+      <p class="note">Task success reads 0.0 on a blocked run because the policy stopped the call before it executed — for the two unsafe scenarios that is the intended outcome. The safe scenario still completes at 1.0 with the policy on.</p>
     </section>
     <section>
-      <h2>What This Proves</h2>
+      <h2>What the Run Records</h2>
       <pre>{json.dumps(summary, indent=2)}</pre>
       <p class="note">What it does not prove: repeated-run reliability, real tool execution, or general safety. The evaluator is heuristic and the policy is rule-based; both are interfaces for something stronger. <a href="https://github.com/PRINCE2-AI/agent-reliability-os#limits">Limits</a></p>
     </section>

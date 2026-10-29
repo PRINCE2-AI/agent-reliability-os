@@ -25,10 +25,10 @@ The bundled benchmark runs three scenarios — one safe, two unsafe — twice: o
 | blocked before execution | 0 | 2 |
 | policy coverage | 0.0 | 1.0 |
 
-The baseline exfiltrates a bearer token over `http.post` and reads `../.env` outside the workspace; its tool-misuse risk hits 0.4 on the exfiltration run. The protected run blocks both calls, redacts the token in the recorded decision, and stores the rules that fired.
+The baseline exfiltrates a bearer token over `http.post` and reads `../.env` outside the workspace; its tool-misuse risk hits 0.4 on the exfiltration run. The protected run blocks both calls, redacts the token in the recorded decision, and stores the rules that fired. A blocked run reports `task_success` 0.0 because the call never executed — for an unsafe call, that is the intended outcome.
 
 > [!IMPORTANT]
-> **Scope of these numbers.** Six deterministic runs, simulated tool execution, one sample per scenario. The table shows the trace and the gate working — it is **not** a reliability estimate. Repetition is the point the banner makes and this demo does not measure it; see [Limits](#limits).
+> **Scope of these numbers.** Six deterministic runs, simulated tool execution, one sample per scenario. The table shows the trace and the gate working — it is **not** a reliability estimate. Repetition is the point the headline makes and this demo does not measure it; see [Limits](#limits).
 
 ## Start here
 
@@ -41,21 +41,14 @@ The baseline exfiltrates a bearer token over `http.post` and reads `../.env` out
 
 ## Quick start
 
-Offline, standard library only — no API key needed for the benchmark, the tests, or the site build.
+The benchmark, the tests, and the site build are offline and standard library only — no API key, no packages.
 
 ```bash
 git clone https://github.com/PRINCE2-AI/agent-reliability-os.git
 cd agent-reliability-os
-python -m venv .venv
-```
-
-Activate it (`.\.venv\Scripts\Activate.ps1` on Windows, `source .venv/bin/activate` elsewhere), then:
-
-```bash
-pip install -r requirements.txt
 python scripts/run_demo.py        # writes demo/sample_outputs.json and demo/runs.csv
 python -m unittest discover tests # 9 tests, no network
-python scripts/build_site.py      # rebuilds site/index.html
+python scripts/build_site.py      # rebuilds site/index.html and the public sample
 ```
 
 Writes to `demo/`:
@@ -63,9 +56,16 @@ Writes to `demo/`:
 - `sample_outputs.json` — summary plus per-run evaluations
 - `runs.csv` — one row per run, for eyeballing diffs between versions
 
-Optional: the API and dashboard.
+Optional: the API and dashboard, the only part that installs packages.
 
 ```bash
+python -m venv .venv
+```
+
+Activate it (`.\.venv\Scripts\Activate.ps1` on Windows, `source .venv/bin/activate` elsewhere), then:
+
+```bash
+pip install -r requirements.txt
 uvicorn app.api:app --reload      # FastAPI
 streamlit run app/ui.py           # dashboard
 ```
@@ -76,7 +76,7 @@ streamlit run app/ui.py           # dashboard
 
 - **Trace collection** — run start, model calls, tool calls, policy decisions, evaluation events, run end.
 - **Runtime policy** — allow / approve / block decisions from deterministic rules, with the matched rule returned to the caller.
-- **Secret redaction** — bearer tokens, OpenAI-style keys, GitHub tokens, AWS keys, and sensitive paths.
+- **Secret redaction** — bearer tokens, OpenAI-style keys, GitHub tokens, and AWS keys. Sensitive paths are scored by the policy, not rewritten.
 - **Trace-level evaluation** — task success, hallucination risk (a proxy), tool-misuse risk, policy coverage, trace completeness, cost, latency.
 - **Baseline comparison** — the same scenario with and without governance, so the delta is visible instead of asserted.
 - **Storage** — SQLite traces, queryable per run.
