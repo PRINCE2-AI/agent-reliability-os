@@ -52,7 +52,7 @@ Activate it (`.\.venv\Scripts\Activate.ps1` on Windows, `source .venv/bin/activa
 ```bash
 pip install -r requirements.txt
 python scripts/run_demo.py        # writes demo/sample_outputs.json and demo/runs.csv
-python -m unittest discover tests # 6 tests, no network
+python -m unittest discover tests # 9 tests, no network
 python scripts/build_site.py      # rebuilds site/index.html
 ```
 
@@ -173,7 +173,7 @@ See [docs/research_notes.md](docs/research_notes.md) for sources and where each 
 python -m unittest discover tests
 ```
 
-Six offline tests over the policy engine, evaluator, trace store, and demo suite. CI runs them and rebuilds the static site on every push to `main`.
+Nine offline tests over the policy engine, evaluator, trace store, API, and demo suite. CI runs them and rebuilds the static site on every push to `main`.
 
 ## Roadmap
 

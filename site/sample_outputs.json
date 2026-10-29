@@ -3,6 +3,8 @@
     "total_runs": 6,
     "baseline_risky_successes": 2,
     "protected_blocks": 2,
+    "protected_approvals": 0,
+    "protected_prevented": 2,
     "avg_protected_policy_coverage": 1.0,
     "avg_protected_tool_misuse_risk": 0.0
   },
